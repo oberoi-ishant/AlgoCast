@@ -1,0 +1,27 @@
+<html>
+<head></head>
+<body>
+  <div>Testing Solutions</div>
+  <script>
+    // A : [ 4, 8, -7, -5, -13, 9, -7, 8 ]
+    // B : [ 4, -15, -10, -3, -13, 12, 8, -8 ]
+      function coverPoints(A, B) {
+        var distance = 0;
+        if (A.length == 0) return;
+        if (B.length == 0) return;
+        var x = A[0];
+        var y = B[0];
+        for (var i = 1; i<A.length; i++) {
+          var nextPointX = A[i];
+          var nextPointY = B[i];
+          distance += Math.max(Math.abs(nextPointX - x), Math.abs(nextPointY - y));
+          x = nextPointX;
+          y = nextPointY;
+        }
+        return distance;
+      }
+
+    window.coverPoints = coverPoints;
+  </script>
+</body>
+</html>
