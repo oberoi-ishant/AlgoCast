@@ -22,3 +22,24 @@ function maxChar(str) {
 }
 
 module.exports = maxChar;
+
+// One loop
+function maxChar(str) {
+  let sortedStr = str.split('').sort().join('');
+  let count = 1;
+  let max = 0;
+  let maxChar = '';
+  while(sortedStr.length) {
+    if (sortedStr[0] == sortedStr[1]) {
+      count++;
+      sortedStr.splice(0, 1);
+      continue;
+    }
+    if (max < count) {
+      max = count;
+      maxChar = sortedStr[0];
+    }
+    count = 1;
+    sortedStr.splice(0, 1);
+  }
+}
