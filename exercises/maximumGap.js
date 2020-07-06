@@ -18,3 +18,19 @@ function maximumGap(A) {
   }
   return resGap;
 }
+
+// One loop solution
+function maximumGap (A) {
+  // consecutive elements means
+  // numbers that come in order small -> large
+  let sortedA = A.sort((a,b) => a-b);
+  let gap = -1;
+  while(sortedA.length > 1) {
+    let localGap = sortedA[1] - sortedA[0];
+    if (localGap > 1) {
+      gap = gap < localGap ? localGap : gap;
+    }
+    sortedA.splice(0, 1);
+  }
+  return gap;
+}

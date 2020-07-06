@@ -27,3 +27,21 @@
     }
     return result;
   }
+
+  // One loop.
+  function countnsay (A) {
+    let str = A.toString();
+    let counter = 1;
+    let result = '';
+    for (let i = 0; i<str.length; i++) {
+      if(str[i] == str[i+1]) {
+        counter++;
+      } else {
+        result += `${counter}${str[i]}`;
+        str = str.substr(counter, str.length);
+        counter = 1;
+        i = -1; // setting it -1, as for loop will again set it to 0
+      }
+    }
+    return result;
+  }

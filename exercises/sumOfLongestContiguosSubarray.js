@@ -40,3 +40,15 @@
   // }
   // return res;
 //}
+
+
+ // [-1,2,3,-1,-4] Kadane's Algo. Dynamic Programming
+ function maxSubArray(A) {
+  let globalMax = 0;
+  let localMax = Number.NEGATIVE_INFINITY;
+  for (var i = 0; i < A.length; i++) {
+    localMax = Math.max(A[i], (A[i] + localMax));
+    globalMax = globalMax < localMax ? localMax : globalMax;
+  }
+  return globalMax;
+}
