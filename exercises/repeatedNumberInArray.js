@@ -10,3 +10,5 @@
     }
     return -1;
   }
+
+  // Or use indexOf

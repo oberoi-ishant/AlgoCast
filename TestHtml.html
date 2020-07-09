@@ -3,20 +3,35 @@
 <body>
   <div>Testing Solutions</div>
   <script>
-    function reverseString(strArr) {
+    function singleElementInSortedArray(A) {
       let left = 0;
-      let right = strArr.length - 1;
-      let extrMem = '';
+      let right = A.length-1;
       while(left < right) {
-        extrMem = strArr[left];
-        strArr[left] = strArr[right];
-        strArr[right] = extrMem;
-        left++;
-        right--;
+        let mid = left + (right - left)/2;
+        if (A[mid] !== A[mid+1] && A[mid] !== A[mid-1]) {
+          return A[mid];
+        } else if (A[mid] == A[mid+1]) {
+          // check if you exlude the pair, which side of pair
+          // has odd number of elements. That side definitely has
+          // single element.
+          let isEven = (right - (mid+1))%2 == 0;
+          if (isEven) {
+            right = mid - 1;
+          } else {
+            left = mid + 2;
+          }
+        } else {
+          let isEven = (left - (mid-1))%2 == 0;
+          if (isEven) {
+            left = mid + 1;
+          } else {
+            right = mid - 2;
+          }
+        }
       }
-      return strArr;
+      return A[left];
     }
-    window.reverseString = reverseString;
+    window.singleElementInSortedArray = singleElementInSortedArray;
   </script>
 </body>
 </html>

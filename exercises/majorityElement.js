@@ -7,7 +7,7 @@
 // Assume: array is non-empty and majority element
 // always exists.
 
-// We will solve it using Moores Voting Algorithm.
+// We will solve it using Moore's Voting Algorithm.
 // https://www.geeksforgeeks.org/majority-element/
 // Approach: This is a two-step process.
 // The first step gives the element that maybe the majority element in the array. If there is a majority element in an array, then this step will definitely return majority element, otherwise, it will return candidate for majority element.
