@@ -3,62 +3,20 @@
 <body>
   <div>Testing Solutions</div>
   <script>
-    const aToZArray = Array.from('abcdefghijklmnopqrstuvwxyz');
-    function allAnagramsInString(s, p) {
-      let result = [];
-      // create P array for count of every p char
-      let pArray = new Array(26);
-      pArray.fill(0);
-      for(let i=0; i<p.length; i++) {
-        let indexInAphablets = aToZArray.indexOf(p[i]);
-        pArray[indexInAphablets]++;
+    function reverseString(strArr) {
+      let left = 0;
+      let right = strArr.length - 1;
+      let extrMem = '';
+      while(left < right) {
+        extrMem = strArr[left];
+        strArr[left] = strArr[right];
+        strArr[right] = extrMem;
+        left++;
+        right--;
       }
-      // Now this is the reference pArray
-      // for abc it should be [1,1,1,0,0,0,0,....0]
-      // Meaning a,b,c occur once in p string.
-      // We will compare this ref pArray to every array we create from
-      // sliding window.
-      let tempArr = new Array(26);
-      tempArr.fill(0);
-      for(let i=0; i<p.length; i++) {
-        let indexInAphablets = getIndexInAphablets(s[i]);
-        tempArr[indexInAphablets]++;
-      }
-      if(isAnagram(tempArr, pArray)) {
-        result.push(0);
-      }
-      for(let i=0; i<s.length; i++) {
-        let indexInAphablets = getIndexInAphablets(s[i]);
-        tempArr[indexInAphablets]--;
-        // since 1, 2 are already in window we add the 3rd(lenght of p)
-        // element to the window
-        // In this example since window size is 3
-        // every time loop iterates, you drop the
-        // count for the start elem and add the count for the
-        // next elem which is 3+1
-        // the two elem in between are already in window hence
-        // resuse them.
-
-        // Alternatively every time create a new window with all
-        // 3 elems and compare.
-        let newElementtoWindow = s[p.length + i];
-        indexInAphablets = getIndexInAphablets(newElementtoWindow);
-        tempArr[indexInAphablets]++;
-        if (isAnagram(pArray, tempArr)) {
-          result.push(i+1);
-        }
-      }
-      return result;
+      return strArr;
     }
-
-    function getIndexInAphablets(elem) {
-      return aToZArray.indexOf(elem);
-    }
-
-    function isAnagram(ar1, ar2) {
-      return ar1.join('') == ar2.join('') ? true : false;
-    }
-    window.allAnagramsInString = allAnagramsInString;
+    window.reverseString = reverseString;
   </script>
 </body>
 </html>
