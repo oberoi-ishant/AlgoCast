@@ -1,5 +1,6 @@
 // https://www.youtube.com/watch?v=nqowUJzG-iM&list=PL_z_8CaSLPWekqhdCPmFohncHwz8TY2Go
 // Dynamic Programmig by Aditya Verma. Youtube.
+// You can also check https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/
 // 0-1 Knapsack
 // Given weights and values of n items, put these items
 // in a knapsack of capacity W to get the maximum total
