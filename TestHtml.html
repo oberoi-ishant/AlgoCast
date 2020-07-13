@@ -3,50 +3,48 @@
 <body>
   <div>Testing Solutions</div>
   <script>
-    function knapsack(val, wt, W, n) {
-      // Initalization as base condition
-      // Since Top Down matrix is required from 0 - W and
-      // 0 - n, We will run loop till W+1 and n+1.
-      // the first row and first column will be base condition
-      // When either W is 0 or n is 0.
-      // i is for items
-      // j is for Weight of sack(capacity)
+    function equalSumPartition(arr) {
+      // first let us get sum of array elements.
+      const sum = arr.reduce((elem, initVal) => elem+initVal);
+      const isSumEven = sum % 2 == 0;
 
-      // First create the Array for Top Down Approach.
-      var dp = new Array(n+1);
-      for(let i=0; i<n+1; i++) {
-        dp[i] = new Array(W+1);
-        dp[i].fill(-1);
-      }
-
-      for(let i=0; i<n+1; i++) {
-        for(let j=0; j< W+1; j++) {
-          if (i==0||j==0) {
-            dp[i][j] = 0; // Base condition.
-          }
+      if (isSumEven) {
+        // Call the subsetSum problem, with sum = SUM/2
+        // If it returns true.
+        // Answer is TRUE.
+        const newSum = sum/2;
+        const isSubsetPossible = subsetSum(arr, newSum, arr.length);
+        if (isSubsetPossible) {
+          return true;
         }
       }
-
-      // Now fill the matrix for the rest of the iterations
-      // Basically new we consider choice diagram
-      for(let i=1; i<n+1; i++) {
-        for(let j=1; j<W+1; j++) {
-          if (wt[i-1] <=  j) {
-            const val1 = val[i-1]+dp[i-1][j-wt[i-1]]; // When we include this item.
-            const val2 = dp[i-1][j]; // When we exlude this item.
-            dp[i][j] = Math.max(val1, val2); // Get Max value as asked in question.
-            // See here we say val[i-1] + dp[][], means we are returning values as asked in question.
-            // And will get the Max values as asked in question.
-          } else {
-            dp[i][j] = dp[i-1][j]
-          }
-        }
-      }
-      return dp[n][W];
-      // Our answer is the last elemenyt in Matrix.
-      // Rest are sub problems, solved, hence overrallping subproblems.
+      return false;
     }
-    window.knapsack = knapsack;
+
+    function subsetSum(arr, sum, n) {
+      if(n == 0 && sum == 0) {
+        // no element no sum ... empty array is subset possible.
+        // True
+        return true;
+      } else if(n == 0) {
+        // for no element and sum > 0, no subset possible.
+        // False.
+        return false;
+      } else if (sum == 0) {
+        // for sum = 0, any number of elements, doesn't matter.
+        // empty array is possible subset. True.
+        return true;
+      }
+
+      if(arr[n-1] > sum) {
+        return subsetSum(arr, sum, n-1);
+      }
+
+      if (arr[n-1] <= sum) {
+        return subsetSum(arr, sum - arr[n-1], n-1) || subsetSum(arr, sum, n-1);
+      }
+    }
+    window.equalSumPartition = equalSumPartition;
   </script>
 </body>
 </html>
