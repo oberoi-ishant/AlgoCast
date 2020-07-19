@@ -3,47 +3,43 @@
 <body>
   <div>Testing Solutions</div>
   <script>
-    function countSubsetsWithGivenDiff(arr, n, diff) {
-      const sumOfArray = arr.reduce((el, init) => el+init);
-      const sumOfArrayEl = (sumOfArray + diff)/2;
-      // Let us fill the matrix with range 0 - sumOfArray
-      // check what possible subset sums are possible.
-      // [n+1][S+1]
-      let dp = new Array(n+1);
-      for(let i = 0; i < n+1; i++) {
-        dp[i] = new Array(sumOfArrayEl+1);
-        dp[i].fill(0);
+    function unboundedKnapsack(val, wt, W, n) {
+      var dp = new Array(n+1);
+      for(let i=0; i<n+1; i++) {
+        dp[i] = new Array(W+1);
+        dp[i].fill(-1);
       }
 
-      // Initialization of first row/column
-      for(let i = 0; i < n+1; i++) {
-        for(let j=0; j<sumOfArrayEl+1; j++) {
-          if (i==0 && j==0) {
-            dp[i][j] = 1; // Null set
-          } else if (i == 0) {
-            dp[i][j] = 0;
-          } else if (j == 0) {
-            dp[i][j] = 1; // Null set
+      for(let i=0; i<n+1; i++) {
+        for(let j=0; j< W+1; j++) {
+          if (i==0||j==0) {
+            dp[i][j] = 0; // Base condition.
+            //Value is 0 is nothing is added as capacity is zero or there is no item to add.
           }
         }
       }
 
-      // Choice Diagram
-      for(let i=1; i<n+1; i++) {
-        for(let j=1; j<sumOfArrayEl+1; j++) {
-          if (arr[i-1] <= j) { // Remember <=
-            const ch1 = dp[i-1][j-arr[i-1]];
-            const ch2 = dp[i-1][j];
-            dp[i][j] = ch1 + ch2; // We want count from both choices.
+      for(let i=1; i<n+1; i++) {// note starting for 1 as 0 is done in initialization.
+        for(let j=1; j<W+1; j++) {
+          if (wt[i-1] <=  j) {
+            // Including the item.
+            // So we can include again also.
+            // Next recursive call i and NOT i-1
+            const val1 = val[i-1] + dp[i][j-wt[i-1]];
+            // Excluding item. So consider processed.
+            // Next recursive call is i-1;
+            const val2 = dp[i-1][j];
+            dp[i][j] = Math.max(val1, val2);
           } else {
-            dp[i][j] = dp[i-1][j];
+            // Excluding item. So consider processed.
+            // Next recursive call is i-1;
+            dp[i][j] = dp[i-1][j]
           }
         }
       }
-
-      return dp[n][sumOfArrayEl];
+      return dp[n][W];
     }
-    window.countSubsetsWithGivenDiff = countSubsetsWithGivenDiff;
+    window.unboundedKnapsack = unboundedKnapsack;
   </script>
 </body>
 </html>
