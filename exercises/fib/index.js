@@ -42,3 +42,13 @@ const fastFib = memoize(fib);
 fastFib(5);
 
 module.exports = fib;
+
+
+
+// Recursive fibonacci
+function fib(n) {
+  if(n==1) {
+    return 1;
+  }
+  return n*fib(n-1);
+}
