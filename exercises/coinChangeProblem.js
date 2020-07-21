@@ -3,7 +3,7 @@
 // Given an array of coins with some denominations.
 // There is unlimited supply of coins.
 // Use this array to compute the given value.
-// And how many such ways are possible.
+// And how many such ways are possible. Max number of ways.
 // Input: coin [1,2,3]
 // Value: 5
 
