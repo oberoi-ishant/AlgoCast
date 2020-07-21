@@ -3,43 +3,44 @@
 <body>
   <div>Testing Solutions</div>
   <script>
-    function unboundedKnapsack(val, wt, W, n) {
-      var dp = new Array(n+1);
-      for(let i=0; i<n+1; i++) {
-        dp[i] = new Array(W+1);
-        dp[i].fill(-1);
-      }
+function coinChange(coin, sum, n) {
+  // initialise array [n+1][Sum+1]
+  let dp = new Array(n+1);
+  for(let i=0; i<n+1; i++) {
+    dp[i] = new Array(sum+1);
+    dp[i].fill(0);
+  }
 
-      for(let i=0; i<n+1; i++) {
-        for(let j=0; j< W+1; j++) {
-          if (i==0||j==0) {
-            dp[i][j] = 0; // Base condition.
-            //Value is 0 is nothing is added as capacity is zero or there is no item to add.
-          }
-        }
+  // Base Condition
+  for(let i=0; i<n+1; i++) {
+    for(let j=0; j<sum+1; j++) {
+      if(i==0 && j==0) {
+        dp[i][j] = 1; // Empty set for Sum 0
+      } else if(i==0) {
+        dp[i][j] = 0; // No coins, Sum > 0. Not possible
+      } else if(j==0) {
+        dp[i][j] = 1; // Select no coin, Sum = 0. Possible.
       }
-
-      for(let i=1; i<n+1; i++) {// note starting for 1 as 0 is done in initialization.
-        for(let j=1; j<W+1; j++) {
-          if (wt[i-1] <=  j) {
-            // Including the item.
-            // So we can include again also.
-            // Next recursive call i and NOT i-1
-            const val1 = val[i-1] + dp[i][j-wt[i-1]];
-            // Excluding item. So consider processed.
-            // Next recursive call is i-1;
-            const val2 = dp[i-1][j];
-            dp[i][j] = Math.max(val1, val2);
-          } else {
-            // Excluding item. So consider processed.
-            // Next recursive call is i-1;
-            dp[i][j] = dp[i-1][j]
-          }
-        }
-      }
-      return dp[n][W];
     }
-    window.unboundedKnapsack = unboundedKnapsack;
+  }
+
+  // choice diagram
+  // Start with 1, 0 covered in initialization
+  for(let i=1; i<n+1; i++) {
+    for(let j=1; j<sum+1; j++) {
+      if(coin[i-1] > j) {
+        dp[i][j] = dp[i-1][j]; // Processed. not taking.
+      } else {
+        // include
+        const ch1 = dp[i][j - coin[i-1]]; // Including it. Again can be taken
+        const ch2 = dp[i-1][j]; // Processed. not taking.
+        dp[i][j] = ch1+ch2;
+      }
+    }
+  }
+  return dp[n][sum];
+}
+    window.coinChange = coinChange;
   </script>
 </body>
 </html>

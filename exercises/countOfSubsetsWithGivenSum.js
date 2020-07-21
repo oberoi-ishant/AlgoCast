@@ -74,7 +74,7 @@ function countOfSubsetsWithGivenSum(arr, sum, n) {
   const dp = new Array(n+1);
   for(let i=0; i<n+1; i++) {
     dp[i] = new Array(sum+1);
-    dp.fill(0); // since we need count.
+    dp[i].fill(0); // since we need count.
   }
 
   // Base condition.
