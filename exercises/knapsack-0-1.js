@@ -73,12 +73,12 @@ function knapsack(val, wt, W, n) {
 
 
 
-// Now with Memoization:
+// Now with Memoization:/ Bottom Up Approach
 // Create a global dp function to store intermediate results;
 // creating the array with contstrainsts n = no. of items + 1
 // Weight + 1 to get a matrix with 0 - n and 0 - W
 
-var dp = new Array(3+1); // n+1
+let dp = new Array(3+1); // n+1
 // should be greate than 'n', you can use contrainsts in
 //question. like 1<=N<=10
 // W = 50
@@ -97,14 +97,14 @@ function knapsack(val, wt, W, n) {
     return 0;
   }
   // Memoization
-  if(dp[n-1][W] != -1) {
-    return dp[n-1][W];
+  if(dp[n][W] != -1) {
+    return dp[n][W];
   }
   // Now check what is the weight of the element.
   if (wt[n-1] > W) {
     // We can't add it to the sack so continue iteration
-    dp[n-1][W] = knapsack(val, wt, W, n-1);
-    return dp[n-1][W];
+    dp[n][W] = knapsack(val, wt, W, n-1);
+    return dp[n][W];
   }
 
   if (wt[n-1] <= W) {
@@ -112,18 +112,16 @@ function knapsack(val, wt, W, n) {
     // either Add elem to sack or skip this element and
     // move ahead
     // Memoization, store result and then return.
-    dp[n-1][W] = Math.max(val[n-1] + knapsack(val, wt, W-wt[n-1], n-1), knapsack(val, wt, W, n-1));
+    dp[n][W] = Math.max(val[n-1] + knapsack(val, wt, W-wt[n-1], n-1), knapsack(val, wt, W, n-1));
     // here above knapsack(val, wt, W-wt[n-1], n-1), calling knapsack again with n-1 means
     // we are decreasing the input as we have considered one element, now next call is with
     // one less element.
     // wt[n-1] is the weight of our last element, since we supply n = 3, which is lenght of
     // weight array, actual index of last element in array is n-1.
     // don't confuse b/w W-wt[n-1], n-1 ... here n - 1 have different meaning.
-    return dp[n-1][W];
+    return dp[n][W];
   }
 }
-
-
 
 
 // Since here in recursive solution we saw n(items number) and W(weight/capacity)
