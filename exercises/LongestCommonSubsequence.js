@@ -1,7 +1,7 @@
 
 // Given two strings find the lenght of the LCS
 // Longest Common Subsequence
-// Subsequence can be discontinuous.
+// Subsequence can be discontinuous. (but order is same.)
 // substring is continuous.
 
 // Example:
