@@ -3,39 +3,39 @@
 <body>
   <div>Testing Solutions</div>
   <script>
-    function longestCommonSubsequence(s1, s2) {
-      const n = s1.length;
-      const m = s2.length;
-      let dp = new Array(n+1);
-      // Initialization
+    let dp;
+    function longestCommonSubstring(s1, s2) {
+      let n = s1.length;
+      let m = s2.length;
+      let initialCount = 0;
+      dp = new Array(n+1);
       for(let i=0; i<n+1; i++) {
         dp[i] = new Array(m+1);
         dp[i].fill(-1);
       }
+      return longestCommonSubtr(s1, s2, n, m, initialCount);
+    }
 
-      // Base condition
-      for(let i=0; i<n+1; i++) {
-        for(let j=0; j<m+1; j++) {
-          if(i==0 || j==0) {
-            dp[i][j] = 0;
-          }
-        }
+    function longestCommonSubtr(s1,s2, n, m, count) {
+      if(n==0 || m==0) {
+        return count;
       }
 
-      for(let i=1; i<n+1; i++) {
-        for(let j=1; j<m+1; j++) {
-          if(s1[i-1] == s2[j-1]) {
-            dp[i][j] = 1+dp[i-1][j-1];
-          } else {
-            const ch1 = dp[i-1][j];
-            const ch2 = dp[i][j-1];
-            dp[i][j] = Math.max(ch1, ch2);
-          }
-        }
+      if (dp[n][m] !== -1) {
+        return dp[n][m];
       }
+
+      if(s1[n-1] == s2[m-1]) {
+        count = longestCommonSubtr(s1, s2, n-1, m-1, count+1);
+      }
+
+      const countChoice1 = longestCommonSubtr(s1, s2, n, m-1, 0);
+      const countChoice2 = longestCommonSubtr(s1, s2, n-1, m, 0);
+      count = Math.max(count, countChoice1, countChoice2);
+      dp[n][m] = count;
       return dp[n][m];
     }
-    window.longestCommonSubsequence = longestCommonSubsequence;
+    window.longestCommonSubstring = longestCommonSubstring;
   </script>
 </body>
 </html>
