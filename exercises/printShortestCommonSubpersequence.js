@@ -33,7 +33,7 @@
 // this logic is hard to get.
 
 let dp;
-function printLCS(s1, s2) {
+function printSCS(s1, s2) {
   longestCommonSubsequence(s1, s2);
   // Now traverse the dp starting from dp[n][m]
   // Coz answer of count is at dp[n][m]
