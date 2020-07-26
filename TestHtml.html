@@ -3,18 +3,11 @@
 <body>
   <div>Testing Solutions</div>
   <script>
-    let dp;
-    function lengthOfLCS(s1, s2) {
+    function findLCS(s1) {
       const n = s1.length;
+      const s2 = s1;
       const m = s2.length;
-      dp = new Array(n+1);
-      for(let i=0; i<n+1; i++) {
-        dp[i] = new Array(m+1);
-        dp[i].fill(-1);
-      }
-      const minLen = Math.min(n, m);
-      const lcsLen = LCS(s1, s2, n, m);
-      return lcsLen === minLen;
+      return LCS(s1, s2, n, m);
     }
 
     function LCS(s1, s2, n, m) {
@@ -23,19 +16,21 @@
         return 0;
       }
 
-      if(dp[n][m] !== -1) {
-        return dp[n][m];
-      }
-
-      if(s1[n-1] == s2[m-1]) {
-        dp[n][m] = 1+LCS(s1, s2, n-1 ,m-1);
-        return dp[n][m];
+      // Here we also check that n!==m, meaning we are checking
+      // that the char is present in different index.
+      // We are not considering the same index.
+      // If we do not check this n!==m, we are basically comparing same index
+      // and our answer for LCS will be length of the complete string s1 itself.
+      // As s2 = s1.
+      // So idea is to check if we can get chars at different indexes and if they are equal
+      // are we able to get a longest subsequence.
+      if(s1[n-1] == s2[m-1] && n !== m) {
+        return 1+LCS(s1, s2, n-1 ,m-1);
       } else {
-        dp[n][m] = Math.max(LCS(s1,s2, n, m-1), LCS(s1,s2, n-1, m));
-        return dp[n][m];
+        return Math.max(LCS(s1,s2, n, m-1), LCS(s1,s2, n-1, m));
       }
     }
-    window.lengthOfLCS = lengthOfLCS;
+    window.findLCS = findLCS;
   </script>
 </body>
 </html>
