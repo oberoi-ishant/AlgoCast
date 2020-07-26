@@ -3,91 +3,39 @@
 <body>
   <div>Testing Solutions</div>
   <script>
-  let dp;
-  function printLCS(s1, s2) {
-    longestCommonSubsequence(s1, s2);
-    // Now traverse the dp starting from dp[n][m]
-    // Coz answer of count is at dp[n][m]
-    let i = s1.length; // n
-    let j = s2.length; // m
-    let tempStr = '';
-    while(i > 0 && j > 0) {
-      // element will be at n-1, m-1 last index
-      if(s1[i-1] == s2[j-1] && s1[i-1] !== undefined) {
-        tempStr+=s1[i-1];
-        i--;
-        j--;
+    let dp;
+    function lengthOfLCS(s1, s2) {
+      const n = s1.length;
+      const m = s2.length;
+      dp = new Array(n+1);
+      for(let i=0; i<n+1; i++) {
+        dp[i] = new Array(m+1);
+        dp[i].fill(-1);
+      }
+      const minLen = Math.min(n, m);
+      const lcsLen = LCS(s1, s2, n, m);
+      return lcsLen === minLen;
+    }
+
+    function LCS(s1, s2, n, m) {
+      // Base condition
+      if (n==0 || m==0) {
+        return 0;
+      }
+
+      if(dp[n][m] !== -1) {
+        return dp[n][m];
+      }
+
+      if(s1[n-1] == s2[m-1]) {
+        dp[n][m] = 1+LCS(s1, s2, n-1 ,m-1);
+        return dp[n][m];
       } else {
-        const ch1 = dp[i-1][j];
-        const ch2 = dp[i][j-1];
-        if (ch1 >= ch2) {
-          tempStr+=s1[i-1];
-          i--;
-        } else {
-          tempStr+=s2[j-1];
-          j--;
-        }
+        dp[n][m] = Math.max(LCS(s1,s2, n, m-1), LCS(s1,s2, n-1, m));
+        return dp[n][m];
       }
     }
-
-    // Now we can have a case where either i > 0 or j > 0
-    // When the loop above exists. As condition is &&.
-    // If any one or i,j is 0 we return.
-    // So that means one string either s1 or s2 will have some
-    // chars still left to be processed.
-    // We will just run the loop and add them to the
-    // result string.
-    while(i>0) {
-      tempStr+=s1[i-1];
-      i--;
-    }
-
-    while(j>0) {
-      tempStr+=s2[j-1];
-      j--;
-    }
-    // Out of these only one loop will run, as
-    // one of i or j is zero.
-    return tempStr.split('').reverse().join('');
-  }
-
-
-  function longestCommonSubsequence(s1, s2) {
-    const n = s1.length;
-    const m = s2.length;
-    dp = new Array(n+1);
-    // Initialization
-    for(let i=0; i<n+1; i++) {
-      dp[i] = new Array(m+1);
-      dp[i].fill(-1);
-    }
-
-    // Base condition
-    for(let i=0; i<n+1; i++) {
-      for(let j=0; j<m+1; j++) {
-        if(i==0 || j==0) {
-          dp[i][j] = 0;
-        }
-      }
-    }
-    // start from 1.
-    for(let i=1; i<n+1; i++) {
-      for(let j=1; j<m+1; j++) {
-        if(s1[i-1] == s2[j-1]) {
-          dp[i][j] = 1+dp[i-1][j-1];
-        } else {
-          // reduce i keep j same
-          const ch1 = dp[i-1][j];
-          // reduce j keep i same
-          const ch2 = dp[i][j-1];
-          // get the max from both the choices
-          dp[i][j] = Math.max(ch1, ch2);
-        }
-      }
-    }
-    return dp[n][m];
-  }
-    window.printLCS = printLCS;
+    window.lengthOfLCS = lengthOfLCS;
   </script>
 </body>
 </html>
