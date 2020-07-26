@@ -45,6 +45,8 @@ function LCS(s1, s2, n, m) {
   // As s2 = s1.
   // So idea is to check if we can get chars at different indexes
   // and create the same longest subsequence.
+  // So. We are using the same index from original string to make the subsequence.
+  // thats why n !== m.
   if(s1[n-1] == s2[m-1] && n !== m) {
     return 1+LCS(s1, s2, n-1 ,m-1);
   } else {
