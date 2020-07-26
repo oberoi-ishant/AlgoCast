@@ -11,7 +11,9 @@
 // We can first create it using A(0)A(1)B(2) ... from indexes 0,1,2
 // We can again create it using A(1)A(3)B(4) ... from indexes 1,3,4
 // So ith char in both substring is not haveing same index in origin string.
-
+// Example 2 Input 'AAB'
+// We can create subsequence with A(0) and A(1) from index 0 and 1.
+// We cannot include B in subsequence as B would be in same index in origin string.
 
 // We know two find LCS we need two strings.
 // If we have one string, we sometimes get second string from first by applying
