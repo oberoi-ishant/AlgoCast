@@ -1,3 +1,4 @@
+// https://www.youtube.com/watch?v=kMK148J9qEE&list=PL_z_8CaSLPWekqhdCPmFohncHwz8TY2Go&index=34
 // https://www.geeksforgeeks.org/matrix-chain-multiplication-dp-8/
 // Given an array p[] which represents the chain of matrices such that
 // the ith matrix Ai is of dimension p[i-1] x p[i].
@@ -27,6 +28,12 @@
 // Cost of multiplication: a*b*c.
 
 
+// Steps
+// 1. Find the correct value of i, j
+// 2. Write the base condition.
+// 3. find the k loop scheme.
+// 4. find answer from temporary answers.
+
 // Lets do the recursive approach.
 
 function MatrixChainMultiply(A) {
@@ -35,11 +42,17 @@ function MatrixChainMultiply(A) {
 }
 function MCM(A, i, j) {
     // base condition
+    // If we have only one element in array = [40]
+    // we cannot calculate dimensions of array
+    // as it is i[i-1]*[i]
+    // therefore, i==j is also not valid input.
     if (i==j) {
       return 0;
     }
     let min = Number.POSITIVE_INFINITY;
     for(let k = i; k<j; k++) {
+      // for every value of k, i should be able to calculate matrix
+      // size, A[k-1]*A[k]
       const ch1 = MCM(A, i, k);
       const ch2 = MCM(A, k+1, j);
       let tempAns = ch1 + ch2 + A[i-1]*A[k]*A[j];
