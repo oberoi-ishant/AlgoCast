@@ -3,34 +3,37 @@
 <body>
   <div>Testing Solutions</div>
   <script>
-    function findLCS(s1) {
-      const n = s1.length;
-      const s2 = s1;
-      const m = s2.length;
-      return LCS(s1, s2, n, m);
+  let dp;
+  function MatrixChainMultiply(A) {
+    const n = A.length;
+    dp = new Array(n);
+    for(let i=0; i<n;  i++) {
+      dp[i] = new Array(n);
+      dp[i].fill(-1);
     }
-
-    function LCS(s1, s2, n, m) {
-      // Base condition
-      if (n==0 || m==0) {
+    return MCM(A, 1, n-1);
+  }
+  function MCM(A, i, j) {
+      // base condition
+      if (i==j) {
         return 0;
       }
-
-      // Here we also check that n!==m, meaning we are checking
-      // that the char is present in different index.
-      // We are not considering the same index.
-      // If we do not check this n!==m, we are basically comparing same index
-      // and our answer for LCS will be length of the complete string s1 itself.
-      // As s2 = s1.
-      // So idea is to check if we can get chars at different indexes and if they are equal
-      // are we able to get a longest subsequence.
-      if(s1[n-1] == s2[m-1] && n !== m) {
-        return 1+LCS(s1, s2, n-1 ,m-1);
-      } else {
-        return Math.max(LCS(s1,s2, n, m-1), LCS(s1,s2, n-1, m));
+      if(dp[i][j] !== -1) {
+        return dp[i][j];
       }
-    }
-    window.findLCS = findLCS;
+      let min = Number.POSITIVE_INFINITY;
+      for(let k = i; k<j; k++) {
+        const ch1 = MCM(A, i, k);
+        const ch2 = MCM(A, k+1, j);
+        let tempAns = ch1 + ch2 + A[i-1]*A[k]*A[j];
+        if (min > tempAns) {
+          min = tempAns;
+        }
+      }
+      dp[i][j] = min;
+      return dp[i][j];
+  }
+    window.MatrixChainMultiply = MatrixChainMultiply;
   </script>
 </body>
 </html>
