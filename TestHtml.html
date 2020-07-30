@@ -3,26 +3,23 @@
 <body>
   <div>Testing Solutions</div>
   <script>
-  let dp;
   function MatrixChainMultiply(A) {
     const n = A.length;
-    dp = new Array(n);
-    for(let i=0; i<n;  i++) {
-      dp[i] = new Array(n);
-      dp[i].fill(-1);
-    }
     return MCM(A, 1, n-1);
   }
   function MCM(A, i, j) {
       // base condition
+      // If we have only one element in array = [40]
+      // we cannot calculate dimensions of array
+      // as it is i[i-1]*[i]
+      // therefore, i==j is also not valid input.
       if (i==j) {
         return 0;
       }
-      if(dp[i][j] !== -1) {
-        return dp[i][j];
-      }
       let min = Number.POSITIVE_INFINITY;
       for(let k = i; k<j; k++) {
+        // for every value of k, i should be able to calculate matrix
+        // size, A[k-1]*A[k]
         const ch1 = MCM(A, i, k);
         const ch2 = MCM(A, k+1, j);
         let tempAns = ch1 + ch2 + A[i-1]*A[k]*A[j];
@@ -30,8 +27,7 @@
           min = tempAns;
         }
       }
-      dp[i][j] = min;
-      return dp[i][j];
+      return min;
   }
     window.MatrixChainMultiply = MatrixChainMultiply;
   </script>
