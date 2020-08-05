@@ -3,33 +3,40 @@
 <body>
   <div>Testing Solutions</div>
   <script>
-  function MatrixChainMultiply(A) {
-    const n = A.length;
-    return MCM(A, 1, n-1);
-  }
-  function MCM(A, i, j) {
-      // base condition
-      // If we have only one element in array = [40]
-      // we cannot calculate dimensions of array
-      // as it is i[i-1]*[i]
-      // therefore, i==j is also not valid input.
-      if (i==j) {
-        return 0;
+    let floorEgg;
+    function main(f, e) {
+      floorEgg = new Array(f+1);
+      for(let i = 0; i<f+1; i++) {
+        floorEgg[i] = new Array(e+1);
+        floorEgg[i].fill(-1);
       }
-      let min = Number.POSITIVE_INFINITY;
-      for(let k = i; k<j; k++) {
-        // for every value of k, i should be able to calculate matrix
-        // size, A[k-1]*A[k]
-        const ch1 = MCM(A, i, k);
-        const ch2 = MCM(A, k+1, j);
-        let tempAns = ch1 + ch2 + A[i-1]*A[k]*A[j];
-        if (min > tempAns) {
-          min = tempAns;
+      return eggDrop(e, f);
+    }
+
+    function eggDrop(e, f) {
+      // Base condition
+      for(let i=0; i<f+1; i++) {
+        floorEgg[i][1] = i;
+      }
+
+      for(let i=0; i<e+1; i++) {
+        floorEgg[1][i] = 1;
+      }
+
+      for(let i=2; i<f+1; i++) {
+        for(let j=2; j<e+1; j++) {
+          floorEgg[i][j] = Number.POSITIVE_INFINITY;
+          for(let k=1; k<i; k++) {
+            const brokenResult = floorEgg[k-1][j-1];
+            const unbrokenResult = floorEgg[i-k][j];
+            const temp = 1 + Math.max(brokenResult, unbrokenResult);
+            floorEgg[i][j] = Math.min(floorEgg[i][j], temp);
+          }
         }
       }
-      return min;
-  }
-    window.MatrixChainMultiply = MatrixChainMultiply;
+      return floorEgg[f][e];
+    }
+    window.main = main;
   </script>
 </body>
 </html>
