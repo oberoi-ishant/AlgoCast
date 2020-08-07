@@ -96,3 +96,71 @@ function MCM(A, i, j) {
     dp[i][j] = min;
     return dp[i][j];
 }
+
+// Top Down
+// Also check palendromic partitions.
+// There is good difference between dp initialization.
+// https://www.geeksforgeeks.org/matrix-chain-multiplication-dp-8/
+// https://www.youtube.com/watch?v=vgLJZMUfnsU
+// We can consider this multiplication like a string
+// ABCD... (A)((BC)D) or (A)(B(CD)) or (AB)(CD) or (A(BC))(D) ...
+// Will use input matrix to calculate dimensions of matrix.
+// So for first matrix will need i = 1, to get dimensions.
+// Input: p[] = {10, 20, 30, 40, 30}
+// Input arr[i-1]*arr[i] ie. arr[0]*arr[1] = 10 X 20
+// Steps:
+// 1. Enter base condition values in dp.
+// 2. Start for substring with length 2 to < n (length loop)
+// 3. Start i loop.
+// 4. Calculate value of j.
+// 5. Start k loop.
+// 6. Calculate temp answers. Cost of [i,j][k+1,j] + cost of multiplying (AB)(CD) for example.
+// 7. which (AB)(CD) is like str[i-1] * str[k] * str[j].
+// 8. Calculate dp[i][j]
+// Image: MCM_Top_Down_DP.jpg in question-images folder
+let dp;
+function main(str) {
+  const n = str.length;
+  dp = new Array(n);
+  for(let i=1; i<n; i++) {
+    // Starting from 1.
+    // As we are considering arrays like ABC ...
+    // But actual input is an array to calculate dimenions.
+    // No of arrays from input array = n - 1;
+    dp[i] = new Array(n);
+    dp[i].fill(0);
+  }
+
+  for(let i=1; i<n; i++) {
+    for(let j=1; j<n; j++) {
+      if (i == j) {
+        dp[i][j] = 0; // Cost is 0 for a single matrix. So (0,0) (1,1) (2,2) (3,3) etc have 0 cost
+      }
+    }
+  }
+
+  for(let len=2; len<n; len++) {
+    // Here less than n, as no of matrix is n - 1. So last matrix
+    // in dp will be at index n - 1. ABCD ... So D will be at index n - 1.
+    // for s substring of len L, set different
+    // possible starting indexes
+    // Starting i from 1. As input is of dimensions to calculate array dimensions.
+    // First array dimensions are possible if i = 1 in input array. [i-1][i]
+    // This also means we are expecting entire array srting ABC.. to be at first row.
+    // So answer will be in matrix at [1][n-1] and not [0][n-1].
+    // As in palendromin partitions. Coz in palendromic partitions we get the normal thing
+    // ie first char of string at index 0. Here to compute first array we have to start from 1.
+    for(let i=1; i <= n - len; i++) { // Staring i = 1, as to get first matrix dimenions we need [i-1]X[i]
+      // set the ending index j
+      let j = i + len - 1;
+      dp[i][j] = Number.POSITIVE_INFINITY;
+      for(let k=i; k<j; k++) { // k < j as we need to partition. on i,k and k+1,j
+        const part1 = dp[i][k];
+        const part2 = dp[k+1][j];
+        let tempCost = part1 + part2 + str[i-1] * str[k] * str[j];
+        dp[i][j] = Math.min(dp[i][j], tempCost);
+      }
+    }
+  }
+  return dp[1][n-1]; // NOTE: answer at [1][n-1].
+}

@@ -3,38 +3,39 @@
 <body>
   <div>Testing Solutions</div>
   <script>
-    let floorEgg;
-    function main(f, e) {
-      floorEgg = new Array(f+1);
-      for(let i = 0; i<f+1; i++) {
-        floorEgg[i] = new Array(e+1);
-        floorEgg[i].fill(-1);
-      }
-      return eggDrop(e, f);
-    }
-
-    function eggDrop(e, f) {
-      // Base condition
-      for(let i=0; i<f+1; i++) {
-        floorEgg[i][1] = i;
+    let dp;
+    function main(str) {
+      const n = str.length;
+      dp = new Array(n);
+      for(let i=1; i<n; i++) {
+        dp[i] = new Array(n);
+        dp[i].fill(0);
       }
 
-      for(let i=0; i<e+1; i++) {
-        floorEgg[1][i] = 1;
-      }
-
-      for(let i=2; i<f+1; i++) {
-        for(let j=2; j<e+1; j++) {
-          floorEgg[i][j] = Number.POSITIVE_INFINITY;
-          for(let k=1; k<i; k++) {
-            const brokenResult = floorEgg[k-1][j-1];
-            const unbrokenResult = floorEgg[i-k][j];
-            const temp = 1 + Math.max(brokenResult, unbrokenResult);
-            floorEgg[i][j] = Math.min(floorEgg[i][j], temp);
+      for(let i=1; i<n; i++) {
+        for(let j=1; j<n; j++) {
+          if (i == j) {
+            dp[i][j] = 0; // Cost is 0 for a single matrix. So (0,0) (1,1) (2,2) (3,3) etc have 0 cost
           }
         }
       }
-      return floorEgg[f][e];
+
+      for(let len=2; len<n; len++) {
+        // for s substring of len L, set different
+        // possible starting indexes
+        for(let i=1; i <= n - len; i++) { // Staring i = 1, as to get first matrix dimenions we need [i-1]X[i]
+          // set the ending index j
+          let j = i + len - 1;
+          dp[i][j] = Number.POSITIVE_INFINITY;
+          for(let k=i; k<j; k++) { // k < j as we need to partition. on i,k and k+1,j
+            const part1 = dp[i][k];
+            const part2 = dp[k+1][j];
+            let tempCost = part1 + part2 + str[i-1] * str[k] * str[j];
+            dp[i][j] = Math.min(dp[i][j], tempCost);
+          }
+        }
+      }
+      return dp[1][n-1];
     }
     window.main = main;
   </script>
