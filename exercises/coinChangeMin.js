@@ -92,3 +92,43 @@ function coinChangeMin(coin, S, n) {
     return Math.min(ch1, ch2);
   }
 }
+
+
+// Recursive
+function coinChangeMin(coin, S, n) {
+  // Base condition
+  if (S==0) {
+    return 0;
+  }
+
+  let res = Number.POSITIVE_INFINITY;
+
+  for(let i=0; i<m; i++) {
+    if(coin[i] <=S) {
+      let subResult = 1 + coinChangeMin(coin, S-coin[m], n);
+      res = Math.min(subResult, res);
+    }
+  }
+  return res;
+}
+
+// OR from GeeksForGeeks
+// https://www.geeksforgeeks.org/find-minimum-number-of-coins-that-make-a-change/
+function coinChangeMin(coin, S, n) {
+  // Base condition
+  if (S==0) {
+    return 0;
+  }
+
+  let res = Number.POSITIVE_INFINITY;
+
+  for(let i=0; i<n; i++) {
+    if(coin[i] <=S) {
+      let subResult = coinChangeMin(coin, S-coin[i], n);
+      if (subResult != Number.POSITIVE_INFINITY && subResult + 1 < res) {
+        res = subResult + 1;
+      }
+    }
+  }
+  return res;
+}
