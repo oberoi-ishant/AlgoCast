@@ -3,41 +3,25 @@
 <body>
   <div>Testing Solutions</div>
   <script>
-    let dp;
-    function main(str) {
-      const n = str.length;
-      dp = new Array(n);
-      for(let i=1; i<n; i++) {
-        dp[i] = new Array(n);
-        dp[i].fill(0);
-      }
-
-      for(let i=1; i<n; i++) {
-        for(let j=1; j<n; j++) {
-          if (i == j) {
-            dp[i][j] = 0; // Cost is 0 for a single matrix. So (0,0) (1,1) (2,2) (3,3) etc have 0 cost
-          }
-        }
-      }
-
-      for(let len=2; len<n; len++) {
-        // for s substring of len L, set different
-        // possible starting indexes
-        for(let i=1; i <= n - len; i++) { // Staring i = 1, as to get first matrix dimenions we need [i-1]X[i]
-          // set the ending index j
-          let j = i + len - 1;
-          dp[i][j] = Number.POSITIVE_INFINITY;
-          for(let k=i; k<j; k++) { // k < j as we need to partition. on i,k and k+1,j
-            const part1 = dp[i][k];
-            const part2 = dp[k+1][j];
-            let tempCost = part1 + part2 + str[i-1] * str[k] * str[j];
-            dp[i][j] = Math.min(dp[i][j], tempCost);
-          }
-        }
-      }
-      return dp[1][n-1];
+  function coinChangeMin(coin, S, n) {
+    // Base condition
+    if (S==0 && n==0) {
+      return Number.POSITIVE_INFINITY;
+    } else if (S==0) {
+      return 0;
+    } else if (n==0) {
+      return Number.POSITIVE_INFINITY
     }
-    window.main = main;
+
+    if (coin[n-1] > S) {
+      return coinChangeMin(coin, S, n-1);
+    } else {
+      const ch1 = coinChangeMin(coin, S, n-1);
+      const ch2 = 1 + coinChangeMin(coin, S-coin[n-1], n);
+      return Math.min(ch1, ch2);
+    }
+  }
+    window.coinChangeMin = coinChangeMin;
   </script>
 </body>
 </html>

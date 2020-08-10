@@ -55,36 +55,37 @@ function eggDrop(e, f) {
 // This for DP Top Down table.
 // Top Down Approach
 // This works for all cases. No Time Limit Exceeded.(TLE)
-
 let floorEgg;
-function main(f, e) {
+function eggDrop(f, e) {
   floorEgg = new Array(f+1);
   for(let i = 0; i<f+1; i++) {
     floorEgg[i] = new Array(e+1);
-    floorEgg[i].fill(-1);
+    floorEgg[i].fill(0);
   }
-  return eggDrop(e, f);
-}
 
-function eggDrop(e, f) {
   // Base condition
   for(let i=0; i<f+1; i++) {
-    floorEgg[i][1] = i;
-    // if only one egg, then max attempts equal to no. of floors.
+    for(let j=0; j<e+1; j++) {
+      // We need at least one floor to try.
+      // only one floor, max attempts = 1
+      floorEgg[1][j] = 1;
+      // If only one egg, then max attempts are number of floors 'i'
+      floorEgg[i][1] = i;
+    }
   }
 
-  for(let i=0; i<e+1; i++) {
-    floorEgg[1][i] = 1; // if only one floor, only 1 attempt.
-  }
-
-  for(let i=2; i<f+1; i++) {
-    for(let j=2; j<e+1; j++) {
-      floorEgg[i][j] = Number.POSITIVE_INFINITY;
-      for(let k=1; k<i; k++) {
-        const brokenResult = floorEgg[k-1][j-1];
-        const unbrokenResult = floorEgg[i-k][j];
-        const temp = 1 + Math.max(brokenResult, unbrokenResult);
-        floorEgg[i][j] = Math.min(floorEgg[i][j], temp);
+  // Now lets start from floor 2 to floor f
+  for(let floors = 2; floors <= f; floors++) {
+    // find the i loop.
+    // initial and max values of i
+    for(let eggs=2; eggs <= e; eggs++) {
+      floorEgg[floors][eggs] = Number.POSITIVE_INFINITY;
+      // start from floors of size i
+      for (let k=2; k<floors; k++) {
+        const eggBreaks = floorEgg[k-1][eggs-1];
+        const eggSurvives = floorEgg[floors-k][eggs];
+        const worstCase = 1 + Math.max(eggBreaks, eggSurvives);
+        floorEgg[floors][eggs] = Math.min(floorEgg[floors][eggs], worstCase);
       }
     }
   }
